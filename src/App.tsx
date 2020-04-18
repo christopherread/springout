@@ -17,9 +17,10 @@ function App() {
             <Switch>
               <Route path={'/'} exact={true} component={Welcome} />
               <Route path={'/slack'} component={SlackLandingPage} />
-              <Route path={'cleaning'} component={Cleaning} />
+              <Route path={'/cleaning'} component={Cleaning} />
               <Route path={'/gardening'} component={Gardening} />
               <Route path={'/cooking'} component={Cooking} />
+              <Route path={'/test'} component={Test}/>
             </Switch>
           </Suspense>
         </div>
@@ -46,17 +47,17 @@ const Welcome = () => {
 const Cooking = () =>{
   return (
     <div>
-      Cooking
+      <h1>Cooking</h1>
     </div>
   )
 }
 
 
 const Cleaning =() =>{
-  
+
   return(
   <div>
-    Cleaning
+    <h1> Cleaning  </h1>
   </div>
 
   )
@@ -64,8 +65,9 @@ const Cleaning =() =>{
 
 const Gardening =() =>{
   return(
-    <div>
+    <div><h1>
       Gardening
+      </h1>
     </div>
 
   )

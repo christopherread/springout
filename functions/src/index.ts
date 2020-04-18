@@ -109,3 +109,15 @@ export const slackEvent = functions.https.onRequest(async (req, res) => {
 export const onUserDeleted = functions.auth.user().onDelete(async (user) => {
     await slackService.deleteUser(user.uid);
 });
+
+export const onFBaseStorageUpdated = functions.storage.object().onFinalize(async (object:any) => {
+
+//const fileBucket = object.bucket; // The Storage bucket that contains the file.
+const filePath = object.name; // File path in the bucket.
+//const contentType = object.contentType; // File content type.
+//const metageneration = object.metageneration; // Number of times metadata has been generated. New objects have a value of 1.
+console.log(filePath)
+});
+export const onFBaseStorageDelete = functions.storage.object().OnDelete(async (object:any) =>{
+console.log(object.name);
+});
