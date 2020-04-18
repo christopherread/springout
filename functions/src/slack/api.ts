@@ -22,6 +22,7 @@ let clientSecret = '';
 let signingSecret = '';
 
 const scope = [
+    'im:read',
     'im:write',
     'im:history',
     'users:read',
