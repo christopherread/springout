@@ -103,3 +103,9 @@ export const slackEvent = functions.https.onRequest(async (req, res) => {
 
     res.sendStatus(200);
 });
+
+// if we delete a user from Firebase console, for example due to a privacy request
+// make sure we clean up the associated user data
+export const onUserDeleted = functions.auth.user().onDelete(async (user) => {
+    await slackService.deleteUser(user.uid);
+});
