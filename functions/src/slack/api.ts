@@ -22,6 +22,7 @@ let clientSecret = '';
 let signingSecret = '';
 
 const scope = [
+    'chat:write',
     'im:read',
     'im:write',
     'im:history',
@@ -144,25 +145,25 @@ export const verify = (req: functions.https.Request) => {
     const sigHeaderVal = req.header(sigHeaderKey);
 
     if (!tsHeaderVal) {
-        console.error('slackApi verify', `error: missing header ${tsHeaderKey}`);
+        console.error('slack api verify', `error: missing header ${tsHeaderKey}`);
         return false;
     }
 
     if (!sigHeaderVal) {
-        console.error('slackApi verify', `error: missing header ${sigHeaderKey}`);
+        console.error('slack api verify', `error: missing header ${sigHeaderKey}`);
         return false;
     }
 
     const timestamp = parseInt(tsHeaderVal);
 
     if (timestamp <= 0) {
-        console.error('slackApi verify', `error: invalid header ${tsHeaderKey}: ${tsHeaderVal}`);
+        console.error('slack api verify', `error: invalid header ${tsHeaderKey}: ${tsHeaderVal}`);
         return false;
     }
 
     const time = Math.floor(new Date().getTime() / 1000);
     if (Math.abs(time - timestamp) > 60 * 5) {
-        console.error('slackApi verify', `error: old timstamp ${tsHeaderKey}: ${tsHeaderVal}`);
+        console.error('slack api verify', `error: old timstamp ${tsHeaderKey}: ${tsHeaderVal}`);
         return false;
     }
 
@@ -176,11 +177,11 @@ export const verify = (req: functions.https.Request) => {
     if (crypto.timingSafeEqual(
         Buffer.from(signature, 'utf8'),
         Buffer.from(sigHeaderVal, 'utf8'))) {
-        console.log('slackApi verify', 'success');
+        console.log('slack api verify', 'success');
         return true;
     }
 
-    console.error('slackApi verify', `error: signatures aren't equal`, body);
+    console.error('slack api verify', `error: signatures aren't equal`, body);
     return false;
 }
 
@@ -206,7 +207,7 @@ export const oauthAccess = async (args: { code: string, redirect_uri?: string })
 
 // https://api.slack.com/interactivity/slash-commands#responding_to_commands
 export const respond = async (url: string, data: Partial<ChatPostMessageArguments>) => {
-    console.log('slackApi respond', url, data);
+    console.log('slack api respond', url, data);
 
     const response = await axios({
         method: 'POST',
@@ -217,7 +218,7 @@ export const respond = async (url: string, data: Partial<ChatPostMessageArgument
         }
     });
 
-    console.log('slackApi response', response.data);
+    console.log('slack api response', response.data);
 
     return response.data;
 }
