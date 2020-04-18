@@ -10,7 +10,7 @@ function App() {
     <Router>
       <div className="app">
         <header>
-          <img src={logo} />
+          <img alt="logo" src={logo} />
         </header>
         <div className="app-body">
           <Route path={'/slack/linked'}>
