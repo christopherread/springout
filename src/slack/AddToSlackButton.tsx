@@ -2,6 +2,8 @@ import React from 'react';
 import './AddToSlackButton.css';
 
 const slackScopes = [
+    'chat:write',
+    'im:read',
     'im:write',
     'im:history',
     'users:read',
