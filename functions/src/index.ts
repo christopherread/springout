@@ -6,7 +6,7 @@ import * as users from './users';
 import * as slackApi from './slack/api';
 import * as slackAuth from './slack/auth';
 import * as slackService from './slack/service';
-import { SlackEventCallbackChallenge, SlackEventCallbackBody, ServiceName, SpringOutMessage, SpringOutMessageType, Handler, logHandler, HandleSlackEventCallback } from './types';
+import { SlackEventCallbackChallenge, SlackEventCallbackBody, ServiceName, SpringOutMessage, SpringOutMessageType, Handler, logHandler, HandleSlackEventCallback, SlackInteractionPayload } from './types';
 
 admin.initializeApp(functions.config().firebase);
 
@@ -103,6 +103,26 @@ export const slackEvent = functions.https.onRequest(async (req, res) => {
     await bus.publish('slack', handleCallback, 'HandleSlackEventCallback');
 
     res.sendStatus(200);
+});
+
+
+export const slackInteraction = functions.https.onRequest(async (req, res) => {
+    const interaction = JSON.parse(req.body.payload) as SlackInteractionPayload;
+    console.log("slack interaction", interaction);
+
+    if (!slackApi.verify(req)) {
+        res.sendStatus(400);
+        return;
+    }
+
+    // stick message on bus as Slack expects response within 3 seconds, otherwise timeout
+    const run = slackService.parseInteraction(interaction);
+    if (run) {
+        await bus.publish('slack', run, 'RunSlackInteraction');
+        res.status(200).send();
+    } else {
+        res.status(200).send('Oops, something went wrong.');
+    }
 });
 
 // if we delete a user from Firebase console, for example due to a privacy request
