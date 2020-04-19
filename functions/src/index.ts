@@ -42,6 +42,7 @@ const callHandlers = async (msg: SpringOutMessage, t: SpringOutMessageType) => {
     }
 }
 
+
 // subscribe to messages for each microservice's topic
 const slackTopic: ServiceName = 'slack';
 export const onSlackMessage = functions.pubsub.topic(slackTopic).onPublish(handleMessage);
@@ -112,12 +113,47 @@ export const onUserDeleted = functions.auth.user().onDelete(async (user) => {
 
 export const onFBaseStorageUpdated = functions.storage.object().onFinalize(async (object:any) => {
 
-//const fileBucket = object.bucket; // The Storage bucket that contains the file.
-const filePath = object.name; // File path in the bucket.
-//const contentType = object.contentType; // File content type.
-//const metageneration = object.metageneration; // Number of times metadata has been generated. New objects have a value of 1.
-console.log(filePath)
+console.log("testing from storage")
+//imageURIS.push(filePath);
+const categoryId = object.name;  // get storage location ie cooking
+
+const data = getStorageDownloadUrl(object);
+
+console.log(data);//  
+
+
+await admin.firestore().collection("Images").doc(categoryId).set({
+    [categoryId]: data
+}, {merge: true} );
+
+
+
 });
-export const onFBaseStorageDelete = functions.storage.object().OnDelete(async (object:any) =>{
-console.log(object.name);
+
+export const onFBaseStorageDelete = functions.storage.object().onDelete(async (object:any) =>{
+    //const filePath = getStorageDownloadUrl(object);
+    console.log("testing from delete");
+    const categoryId = object.name;  // get storage location ie cooking
+
+   
+    await admin.firestore().collection("Images").doc(categoryId).set({
+        [categoryId]: null
+    }, {merge: true} );
 });
+
+
+// Note: You might _think_ this would be supplied on 
+// the AdminSDK, like it is on the WebSDK, but no
+const getStorageDownloadUrl = (object: functions.storage.ObjectMetadata) => {
+    const { name, bucket, metadata } = object;
+    if (!name) {
+        throw new Error(`missing name from functions.storage.ObjectMetadata`);
+    }
+    if (!metadata) {
+        throw new Error(`missing metadata from functions.storage.ObjectMetadata`);
+    }
+    const uri = encodeURIComponent(name);
+    const token = metadata.firebaseStorageDownloadTokens;
+    const prefix = 'https://firebasestorage.googleapis.com/v0';
+    return `${prefix}/b/${bucket}/o/${uri}?alt=media&token=${token}`;
+};
