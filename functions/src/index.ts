@@ -42,6 +42,7 @@ const callHandlers = async (msg: SpringOutMessage, t: SpringOutMessageType) => {
     }
 }
 
+
 // subscribe to messages for each microservice's topic
 const slackTopic: ServiceName = 'slack';
 export const onSlackMessage = functions.pubsub.topic(slackTopic).onPublish(handleMessage);
@@ -129,3 +130,44 @@ export const slackInteraction = functions.https.onRequest(async (req, res) => {
 export const onUserDeleted = functions.auth.user().onDelete(async (user) => {
     await slackService.deleteUser(user.uid);
 });
+
+export const onFBaseStorageUpdated = functions.storage.object().onFinalize(async (object:any) => {
+
+const categoryID = String(object.name).split("/",2)[1];  // get storage location ie cooking
+const fileName = String(object.name).split("/",3)[2]
+const url = getStorageDownloadUrl(object);
+
+await admin.firestore().collection('images').doc(categoryID).set({
+    [fileName]: url
+}, {merge: true} );
+
+
+
+});
+
+export const onFBaseStorageDelete = functions.storage.object().onDelete(async (object:any) =>{
+ 
+const categoryID = String(object.name).split("/",2)[1];  // get storage location ie cooking
+const fileName = String(object.name).split("/",3)[2]
+
+    await admin.firestore().collection('images').doc(categoryID).set({
+        [fileName]: null
+    }, {merge: true} );
+});
+
+
+// Note: You might _think_ this would be supplied on 
+// the AdminSDK, like it is on the WebSDK, but no
+const getStorageDownloadUrl = (object: functions.storage.ObjectMetadata) => {
+    const { name, bucket, metadata } = object;
+    if (!name) {
+        throw new Error(`missing name from functions.storage.ObjectMetadata`);
+    }
+    if (!metadata) {
+        throw new Error(`missing metadata from functions.storage.ObjectMetadata`);
+    }
+    const uri = encodeURIComponent(name);
+    const token = metadata.firebaseStorageDownloadTokens;
+    const prefix = 'https://firebasestorage.googleapis.com/v0';
+    return `${prefix}/b/${bucket}/o/${uri}?alt=media&token=${token}`;
+};

@@ -17,6 +17,9 @@ function App() {
             <Switch>
               <Route path={'/'} exact={true} component={Welcome} />
               <Route path={'/slack'} component={SlackLandingPage} />
+              <Route path={'/into/:categoryId'} component={FacadePage} />
+
+              <Route path={'/test'} component={Test}/>
             </Switch>
           </Suspense>
         </div>
@@ -30,6 +33,15 @@ function App() {
   );
 }
 
+
+
+const FacadePage = (props:any)=>{
+return(
+
+<div>Testing {props.categoryId}</div>
+)
+}
+
 const Welcome = () => {
   return (
     <div className="welcome">
@@ -39,4 +51,15 @@ const Welcome = () => {
   )
 }
 
+
+
+
+
+const Test = () =>{
+  return (
+    <div>
+      hello
+    </div>
+  )
+}
 export default App;
