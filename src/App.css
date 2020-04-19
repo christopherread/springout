@@ -82,7 +82,7 @@
   position: relative;
 }
 
-h1::before{
+.welcome h1::before{
   content: '';
   background-image: url(./images/2.svg);
   background-size: contain;
@@ -96,7 +96,7 @@ h1::before{
   bottom: -50px;
 }
 
-h1::after{
+.welcome h1::after{
   content: '';
   background-image: url(./images/3.svg);
   background-size: contain;
