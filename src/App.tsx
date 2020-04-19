@@ -38,7 +38,7 @@ function App() {
 const FacadePage = (props:any)=>{
 return(
 
-<div>Testing {props.into}</div>
+<div>Testing {props.categoryId}</div>
 )
 }
 
