@@ -6,6 +6,7 @@ import svg1 from './images/1.svg';
 import svg4 from './images/4.svg';
 import svg5 from './images/5.svg';
 
+const AboutPage = lazy(() => import(/* webpackChunkName: 'AboutPage' */ './AboutPage'));
 const SlackLandingPage = lazy(() => import(/* webpackChunkName: 'SlackLandingPage' */ './slack/SlackLandingPage'));
 const FacadePage = lazy(() => import(/* webpackChunkName: 'FacadePage' */ './FacadePage'));
 
@@ -29,12 +30,14 @@ function App() {
             <Switch>
               <Route path={'/'} exact={true} component={Welcome} />
               <Route path={'/slack'} component={SlackLandingPage} />
+              <Route path={'/about'} component={AboutPage} />
               <Route path={'/into/:categoryId'} component={FacadePage} />
             </Switch>
           </Suspense>
         </div>
         <footer>
           <a href="mailto:info@springout.org">Contact</a>
+          <Link to="/about">About</Link>
           <Link to="/slack">Slack</Link>
           <a href="https://togethervsvirus.ca/">Together vs Virus Hackathon</a>
         </footer>
@@ -71,7 +74,7 @@ const Welcome = () => {
         - Interactive conversational Slack bot.<br /><br />
         - Automatic email with basic info.<br /><br />
         - Facade sites disguised as common activity pages for DV victim to browse safely.<br /><br />
-        - Dyanmically generated facade sites based on interests.<br /><br />
+        - Dynamic generated facade sites based on interests.<br /><br />
         - Floating escape button that takes you to google.com.<br /><br />
       </div>
     </div>
