@@ -17,9 +17,8 @@ function App() {
             <Switch>
               <Route path={'/'} exact={true} component={Welcome} />
               <Route path={'/slack'} component={SlackLandingPage} />
-              <Route path={'/cleaning'} component={Cleaning} />
-              <Route path={'/gardening'} component={Gardening} />
-              <Route path={'/cooking'} component={Cooking} />
+              <Route path={'/into/:categoryId'} component={FacadePage} />
+
               <Route path={'/test'} component={Test}/>
             </Switch>
           </Suspense>
@@ -34,6 +33,15 @@ function App() {
   );
 }
 
+
+
+const FacadePage = (props:any)=>{
+return(
+
+<div>Testing {props.into}</div>
+)
+}
+
 const Welcome = () => {
   return (
     <div className="welcome">
@@ -44,34 +52,7 @@ const Welcome = () => {
 }
 
 
-const Cooking = () =>{
-  return (
-    <div>
-      <h1>Cooking</h1>
-    </div>
-  )
-}
 
-
-const Cleaning =() =>{
-
-  return(
-  <div>
-    <h1> Cleaning  </h1>
-  </div>
-
-  )
-}
-
-const Gardening =() =>{
-  return(
-    <div><h1>
-      Gardening
-      </h1>
-    </div>
-
-  )
-}
 
 
 const Test = () =>{
