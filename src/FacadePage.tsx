@@ -20,14 +20,18 @@ const FacadePage = (props: FacadePageProps) => {
     const [images, setImages] = useState(null as categoryImages | null);
     const [error, setError] = useState(null as Error | null);
 
-    const category = props.match.params.categoryId;
-    useEffect(() => imagesDoc(category).onSnapshot(s => setImages(s.data() as categoryImages), setError), [category]);
+    const { categoryId } = props.match.params;
+
+    useEffect(() =>
+        imagesDoc(categoryId).onSnapshot(s => setImages(s.data() as categoryImages), setError),
+        [categoryId]);
 
     if (error) {
         return (
-            <div>{error.message}</div>
+            <div>Error: {error.message}</div>
         )
     }
+
     if (!images) {
         return (
             <div>loading</div>
@@ -37,15 +41,16 @@ const FacadePage = (props: FacadePageProps) => {
     return (
         <div className="facade-page">
             {
-                _.map(images, (url, fileName) =>
-                    <div
+                _.map(images, (url, fileName) => url
+                    ? <div
                         className="img-tile"
                         key={fileName}
                         style={{ backgroundImage: `url(${url})` }}
-                    />)
+                    />
+                    : null)
             }
             <div className="title-card">
-                <h1>{category.toUpperCase()}</h1>
+                <h1>{categoryId.toUpperCase()}</h1>
                 <p>
                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
                 </p>
