@@ -1,0 +1,37 @@
+.facade-page {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    position: relative;
+}
+
+.facade-page .img-tile {
+    height: 25vw;
+    width: 25vw;
+    transition: transform 0.2s ease-in-out;
+}
+
+.facade-page .img-tile:hover {
+    transform: translateY(-2px);
+}
+
+.facade-page h1 {
+    font-size: 72px;
+    margin: 20px;
+}
+
+.facade-page .title-card {
+    display: flex;
+    width: 60vw;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: absolute;
+    top: calc(50% - 200px);
+    left: 50%;
+    background: white;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    box-shadow: 0px 10px 15px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
