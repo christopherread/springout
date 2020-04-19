@@ -248,7 +248,7 @@ export const directMessage = async (args: ChatPostMessageArguments) => {
         ...args,
         channel: (conversation as SlackConversation).channel.id
     });
-    result as SlackPostMessageResult;
+    return result as SlackPostMessageResult;
 }
 
 // https://api.slack.com/methods/conversations.open

@@ -13,11 +13,27 @@ export interface HandleSlackEventCallback {
     callback: SlackEventCallbackBody;
 }
 
+export interface RunSlackInteraction {
+    action: string;
+    user: {
+        id: string;
+        username: string;
+        name: string;
+        team_id: string;
+    };
+    team: {
+        id: string;
+        domain: string;
+    };
+}
+
 // and some message types
 export type SlackMessage =
-    | HandleSlackEventCallback;
+    | HandleSlackEventCallback
+    | RunSlackInteraction;
 
 export type SlackMessageType =
+    | 'RunSlackInteraction'
     | 'HandleSlackEventCallback';
 
 // create type will message types in it
@@ -78,4 +94,37 @@ export interface SlackEventAppHomeOpened extends SlackEventCallbackBodyEvent {
         app_installed_team_id: string;
         bot_id: string;
     }
+}
+
+// https://api.slack.com/interactivity/slash-commands
+export interface SlackInteractionPayload {
+    type: string;
+    response_url: string;
+    user: {
+        id: string;
+        username: string;
+        name: string;
+        team_id: string;
+    };
+    team: {
+        id: string;
+        domain: string;
+    };
+    channel: {
+        id: string;
+        name: string;
+    };
+    actions: {
+        action_id: string,
+        block_id: string;
+        text: {
+            type: string;
+            text: string;
+            emoji: boolean;
+        }
+        style: string;
+        value: string;
+        type: string;
+        action_ts: string;
+    }[]
 }
