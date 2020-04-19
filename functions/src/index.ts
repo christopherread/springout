@@ -115,24 +115,31 @@ export const onFBaseStorageUpdated = functions.storage.object().onFinalize(async
 
 console.log("testing from storage")
 //imageURIS.push(filePath);
-const fileName = object.name;  // get storage location ie cooking
+const docID = String(object.name).split("/",1)[0];
+const categoryId = String(object.name).split("/",1)[1];  // get storage location ie cooking
 
-const url = getStorageDownloadUrl(object);
-  
+const data = getStorageDownloadUrl(object);
+
+console.log(data);//  
 
 
-await admin.firestore().collection('images').doc('cleaning').set({ [fileName]: url }, { merge: true });
+await admin.firestore().collection(docID).doc(categoryId).set({
+    [categoryId]: data
+}, {merge: true} );
+
 
 
 });
 
 export const onFBaseStorageDelete = functions.storage.object().onDelete(async (object:any) =>{
     //const filePath = getStorageDownloadUrl(object);
-
-    const fileName = object.name;  // get storage location ie cooking
-
+    const docID = String(object.name).split("/",1)[0];
+    const categoryId = String(object.name).split("/",1)[1];  // get storage location ie cooking
+    
    
-    await admin.firestore().collection('images').doc('cleaning').set({ [fileName]: null }, { merge: true });
+    await admin.firestore().collection(docID).doc(categoryId).set({
+        [object.filePath]: null
+    }, {merge: true} );
 });
 
 
