@@ -10,9 +10,19 @@ You need node, yarn, and npm installed on your machine.
 
 ### git clone https://github.com/christopherread/springout.git
 
+Clones the git repo locally
+
+### `cd springout`
 ### `npm install`
 
 Installs all the necessary packages for the project, including react-scripts.
+
+
+### `cd functions`
+### `npm install`
+### `cd..`
+
+Installs all the necessary packages for the Firebase functions, including react-scripts.
 
 ### `npm install -g firebase-tools`
 
