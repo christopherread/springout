@@ -1,8 +1,9 @@
-import React, { lazy, Suspense } from 'react';
+import React, { lazy, Suspense, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import logo from './images/logo.png'
-
+import { firebaseStore } from './firebase';
+import * as _ from 'lodash';
 const SlackLandingPage = lazy(() => import(/* webpackChunkName: 'SlackLandingPage' */ './slack/SlackLandingPage'));
 
 function App() {
@@ -33,12 +34,40 @@ function App() {
   );
 }
 
+interface FacadePageProps {
+  match: {
+      params: {
+          categoryId: string;
+      }
+  };
+}
+interface categoryImages{
+  [key:string]:string
+
+}
+const imagesDoc = (id: string) => firebaseStore.collection('images').doc(id);
+
+const FacadePage = (props:FacadePageProps)=>{
+  const [images,setImages]=useState(null as categoryImages|null);
+  const [error,setError]=useState(null as Error|null);
+    
+  const category = props.match.params.categoryId;
+  useEffect(()=>imagesDoc(category).onSnapshot(s=>setImages(s.data() as categoryImages), setError), [category]);
+  if(error){
+    return (
+    <div>{error.message}</div>
+    )
+  }
+  if(!images){
+    return (
+    <div>loading</div>
+    )
+  }
+  
 
 
-const FacadePage = (props:any)=>{
 return(
-
-<div>Testing {props.categoryId}</div>
+<div>{_.map(images, url=><img key = {url} src = {url} alt = "thingy"/>) }</div>
 )
 }
 
