@@ -58,7 +58,7 @@ Deploys the web app to Firebase hosting. It will deploy the last production buil
 
 ### `firebase deploy --only functions`
 
-Deploys the back-end to Firebase. These are server-less functions
+Deploys the back-end to Firebase. These are server-less functions that run on Google Cloud.
 
 ### firebase functions:config:set slack.app_id="MYSLACKAPPID"
 ### firebase functions:config:set slack.client_id="MYSLACKCLIENTID"
