@@ -4,6 +4,24 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.escape {
+  text-decoration: none;
+  background: #4A5759;
+  color: white;
+  width: 50px;
+  height: 50px;
+  font-size: 2rem;
+  position: absolute;
+  top: calc(100vh - 200px);
+  right: 100px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
 }
 
 .app header {
@@ -15,6 +33,7 @@
   justify-content: space-between;
   font-size: 1rem;
   box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1;
 }
 
 .app header img {
@@ -51,8 +70,75 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: #F6F7FB;
 }
 
 .welcome {
-  text-align: center;
+  padding: 20px;
+  max-width: 800px;
+}
+
+.welcome h1 {
+  position: relative;
+}
+
+h1::before{
+  content: '';
+  background-image: url(./images/2.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative; 
+  height: 100px;
+  width: 100px;
+  position: absolute;
+  z-index: 1;
+  left: -100px;
+  bottom: -50px;
+}
+
+h1::after{
+  content: '';
+  background-image: url(./images/3.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative; 
+  height: 80px;
+  width: 80px;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: -100px;
+}
+
+.welcome h2 {
+  margin-top: 50px;
+}
+
+.welcome img {
+  width: 40px;
+  height: auto;
+  margin: 5px;
+  z-index: -1;
+}
+
+.welcome .get-button {
+  text-decoration: none;
+  border: 1px solid #4A5759;
+  margin: 20px 0px;
+  border-radius: 20px;
+  padding: 10px 20px;
+  color: white;
+  background-color: #4A5759;
+}
+
+@media (max-width: 640px) {
+  h1::before{
+    content: none;
+    background-image: none;
+  }
+  
+  h1::after{
+    content: none;
+    background-image: none;
+  }
 }
