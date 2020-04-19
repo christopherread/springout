@@ -27,7 +27,7 @@
     justify-content: center;
     padding: 20px;
     position: absolute;
-    top: calc(50% - 200px);
+    top: calc(20% - 200px);
     left: 50%;
     background: white;
     -webkit-transform: translateX(-50%);

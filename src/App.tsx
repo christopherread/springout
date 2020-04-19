@@ -1,5 +1,5 @@
 import React, { lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom';
 import './App.css';
 import logo from './images/logo.png'
 
@@ -11,7 +11,14 @@ function App() {
     <Router>
       <div className="app">
         <header>
-          <img alt="logo" src={logo} />
+          <Link to={'/'}>
+            <img alt="logo" src={logo} />
+          </Link>
+          <div className="menu">
+            <Link to="/into/cooking">Cooking</Link>
+            <Link to="/into/cleaning">Cleaning</Link>
+            <Link to="/into/gardening">Gardening</Link>
+          </div>
         </header>
         <div className="app-body">
           <Suspense fallback={<div>Loading...</div>}>
@@ -24,7 +31,7 @@ function App() {
         </div>
         <footer>
           <a href="mailto:info@springout.org">Contact</a>
-          <a href="/slack">Slack</a>
+          <Link to="/slack">Slack</Link>
           <a href="https://togethervsvirus.ca/">Together vs Virus Hackathon</a>
         </footer>
       </div>
