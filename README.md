@@ -59,3 +59,12 @@ Deploys the web app to Firebase hosting. It will deploy the last production buil
 ### `firebase deploy --only functions`
 
 Deploys the back-end to Firebase. These are server-less functions
+
+### firebase functions:config:set slack.app_id="MYSLACKAPPID"
+### firebase functions:config:set slack.client_id="MYSLACKCLIENTID"
+### firebase functions:config:set slack.signing_secret="MYSLACKCLIENTSECRET"
+### firebase functions:config:set slack.client_secret="MYSLACKCLIENTSECRET"
+
+To connect to a Slack app / bot to the back-end, you need to set some environment variables in Firebase.<br/>
+These are used when communicating with the Slack API<br/>
+You will find these on the dashboard where you registered your Slack app.
