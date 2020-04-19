@@ -113,18 +113,12 @@ export const onUserDeleted = functions.auth.user().onDelete(async (user) => {
 
 export const onFBaseStorageUpdated = functions.storage.object().onFinalize(async (object:any) => {
 
-console.log("testing from storage")
-//imageURIS.push(filePath);
-const docID = String(object.name).split("/",1)[0];
-const categoryId = String(object.name).split("/",1)[1];  // get storage location ie cooking
+const categoryID = String(object.name).split("/",2)[1];  // get storage location ie cooking
+const fileName = String(object.name).split("/",3)[2]
+const url = getStorageDownloadUrl(object);
 
-const data = getStorageDownloadUrl(object);
-
-console.log(data);//  
-
-
-await admin.firestore().collection(docID).doc(categoryId).set({
-    [categoryId]: data
+await admin.firestore().collection('images').doc(categoryID).set({
+    [fileName]: url
 }, {merge: true} );
 
 
@@ -132,13 +126,12 @@ await admin.firestore().collection(docID).doc(categoryId).set({
 });
 
 export const onFBaseStorageDelete = functions.storage.object().onDelete(async (object:any) =>{
-    //const filePath = getStorageDownloadUrl(object);
-    const docID = String(object.name).split("/",1)[0];
-    const categoryId = String(object.name).split("/",1)[1];  // get storage location ie cooking
-    
-   
-    await admin.firestore().collection(docID).doc(categoryId).set({
-        [object.filePath]: null
+ 
+const categoryID = String(object.name).split("/",2)[1];  // get storage location ie cooking
+const fileName = String(object.name).split("/",3)[2]
+
+    await admin.firestore().collection('images').doc(categoryID).set({
+        [fileName]: null
     }, {merge: true} );
 });
 
