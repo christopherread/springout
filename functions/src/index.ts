@@ -93,7 +93,7 @@ export const slackEvent = functions.https.onRequest(async (req, res) => {
         }).send();
         return;
     }
-    
+
     // stick it on bus and handle it asynchronously,
     // so we don't get timeouts and slack trying to 
     // re-send us the same event multiple times
@@ -131,30 +131,24 @@ export const onUserDeleted = functions.auth.user().onDelete(async (user) => {
     await slackService.deleteUser(user.uid);
 });
 
-export const onFBaseStorageUpdated = functions.storage.object().onFinalize(async (object:any) => {
+export const onStorageFinalize = functions.storage.object().onFinalize(async (object: any) => {
+    const categoryId = String(object.name).split("/", 2)[1];  // get storage location ie cooking
+    const fileName = String(object.name).split("/", 3)[2]
+    const url = getStorageDownloadUrl(object);
 
-const categoryID = String(object.name).split("/",2)[1];  // get storage location ie cooking
-const fileName = String(object.name).split("/",3)[2]
-const url = getStorageDownloadUrl(object);
-
-await admin.firestore().collection('images').doc(categoryID).set({
-    [fileName]: url
-}, {merge: true} );
-
-
-
+    await admin.firestore().collection('images').doc(categoryId).set({
+        [fileName]: url
+    }, { merge: true });
 });
 
-export const onFBaseStorageDelete = functions.storage.object().onDelete(async (object:any) =>{
- 
-const categoryID = String(object.name).split("/",2)[1];  // get storage location ie cooking
-const fileName = String(object.name).split("/",3)[2]
+export const onStorageDelete = functions.storage.object().onDelete(async (object: any) => {
+    const categoryId = String(object.name).split("/", 2)[1];  // get storage location ie cooking
+    const fileName = String(object.name).split("/", 3)[2]
 
-    await admin.firestore().collection('images').doc(categoryID).set({
+    await admin.firestore().collection('images').doc(categoryId).set({
         [fileName]: null
-    }, {merge: true} );
+    }, { merge: true });
 });
-
 
 // Note: You might _think_ this would be supplied on 
 // the AdminSDK, like it is on the WebSDK, but no
